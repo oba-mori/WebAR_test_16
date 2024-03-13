@@ -187,31 +187,30 @@
 
 			// 追加
 			document.addEventListener('DOMContentLoaded', function () {
-			// タッチイベントをリスニング
-			document.addEventListener('touchstart', function (event) {
-				// タッチ座標を取得
-				const touchX = event.touches[0].clientX;
-				const touchY = event.touches[0].clientY;
+				// タッチイベントをリスニング
+				document.addEventListener('touchstart', function (event) {
+					const touchX = event.touches[0].clientX;
+					const touchY = event.touches[0].clientY;
 
-				// マウス座標を正規化
-				const mouse = new THREE.Vector2();
-				mouse.x = (touchX / window.innerWidth) * 2 - 1;
-				mouse.y = -(touchY / window.innerHeight) * 2 + 1;
+					// ピクセル座標を正規化して、-1から1の範囲に変換
+					const normalizedX = (touchX / window.innerWidth) * 2 - 1;
+					const normalizedY = -(touchY / window.innerHeight) * 2 + 1;
 
-				// マウス座標を3D空間の座標に変換
-				const raycaster = new THREE.Raycaster();
-				raycaster.setFromCamera(mouse, camera);
-				const intersects = raycaster.intersectObject(plane); // 平面との交差判定
+					// タッチ座標をARヒットテスト用のベクトルに変換
+					const touchVector = new THREE.Vector2(normalizedX, normalizedY);
 
-				if (intersects.length > 0) {
-					const point = intersects[0].point;
-					console.log('タッチした3D空間上の座標:', point.x, point.y, point.z);
-					
-					// 3Dモデルの表示
-					display3DModel(point.x, point.y, point.z);
-				}
+					// ARヒットテストを実行
+					renderer.xr.hitTest(touchVector, session, function (hits) {
+						if (hits.length > 0) {
+							const hit = hits[0];
+							const hitMatrix = new THREE.Matrix4().fromArray(hit.hitMatrix);
+							const hitPosition = new THREE.Vector3();
+							hitPosition.setFromMatrixPosition(hitMatrix);
+							console.log('AR床面の座標:', hitPosition.x, hitPosition.y, hitPosition.z);
+						}
+					});
+				});
 			});
-		});
 
 
 
