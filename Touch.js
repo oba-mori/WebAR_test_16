@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
 	
 	    // 座標をコンソールに出力する（デバッグ用）
-		console.log('タッチした座標:', touchX, touchY);
+		// console.log('タッチした座標:', touchX, touchY);
 		// alert('タッチした座標:', touchX, touchY);
 		// 他の処理と一緒に、ここにタッチした座標に関する追加の処理を記述する	
 	});
