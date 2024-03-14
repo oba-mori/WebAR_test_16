@@ -19,6 +19,7 @@
 	13:モデル二つの表示非表示をそれぞれボタンで制御
 	14:モデルの明るさ変更(モデル2のみ)
 	15:overlay1の高さがタッチの前後で変化してしまうため、修正中
+	16:
 
 
 
@@ -62,7 +63,7 @@
 <html lang="en">
 
 <head>
-	<title>15 three.js ar - hit test</title>
+	<title>16 three.js ar - hit test</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<link type="text/css" rel="stylesheet" href="main.css">
@@ -404,6 +405,48 @@
 
 			//
 			window.addEventListener('resize', onWindowResize);
+
+
+
+
+
+			// 追加				
+			// タップした位置のワールド座標を保持する変数を宣言
+			let tapPosition = new THREE.Vector3();
+
+			// render 関数内でタップイベントを監視し、タップが発生した場合にその位置を取得する
+			window.addEventListener('click', function(event) {
+				// クリックイベントの位置を取得
+				const x = event.clientX;
+				const y = event.clientY;
+
+				// スクリーン座標系を正規化デバイス座標系（NDC）に変換
+				const ndcX = (x / window.innerWidth) * 2 - 1;
+				const ndcY = -(y / window.innerHeight) * 2 + 1;
+
+				// 正規化デバイス座標系からレイを作成
+				const raycaster = new THREE.Raycaster();
+				raycaster.setFromCamera({ x: ndcX, y: ndcY }, camera);
+
+				// レイと平面の交点を計算
+				const intersects = raycaster.intersectObjects(scene.children, true);
+
+				// 交点が存在する場合、最初の交点の位置を取得
+				if (intersects.length > 0) {
+					tapPosition.copy(intersects[0].point);
+					console.log('タップ位置のワールド座標:', tapPosition);
+				}
+			});
+
+
+
+
+
+
+
+
+
+
 
 		}
 
