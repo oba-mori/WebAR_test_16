@@ -15,6 +15,7 @@ class ARButton {
 		// ボタンをbody要素に追加
 		const button = document.createElement('button');
 
+		// hittestの実装
 		function showStartAR( /*device*/) {
 
 
@@ -164,18 +165,11 @@ class ARButton {
 
 
 
-
-
-
 				// ARButton.model2_display の値が変更されたときにイベントを発火する
 				function fireARButtonQChangedEvent() {
 					const arButtonQChangedEvent = new Event('arButtonQChanged');
 					document.dispatchEvent(arButtonQChangedEvent);
 				}
-
-
-
-
 
 
 
@@ -197,12 +191,38 @@ class ARButton {
 
 			}
 
+
+
+
+
+
+
+
+
+			document.addEventListener('DOMContentLoaded', function () {
+				// タッチイベントをリスニング
+				document.addEventListener('touchstart', function (event) {
+					const touchX = event.touches[0].clientX;
+					const touchY = event.touches[0].clientY;
+					
+					console.log('タッチした座標: X=', touchX, ' Y=', touchY);
+				});
+			});
+			
+
+
+
+
+
+
+
+
+			
 			//
 
 			let currentSession = null;
 
 			async function onSessionStarted(session) {
-
 				session.addEventListener('end', onSessionEnded);
 
 				renderer.xr.setReferenceSpaceType('local');
@@ -213,11 +233,9 @@ class ARButton {
 				sessionInit.domOverlay.root.style.display = '';
 
 				currentSession = session;
-
 			}
 
 			function onSessionEnded( /*event*/) {
-
 				currentSession.removeEventListener('end', onSessionEnded);
 
 				button.textContent = 'START AR';
@@ -250,28 +268,14 @@ class ARButton {
 
 			// ボタンクリック時の処理
 			button.onclick = function () {
-
 				if (currentSession === null) {
-
 					navigator.xr.requestSession('immersive-ar', sessionInit).then(onSessionStarted);
-
 				} else {
-
 					currentSession.end();
-
 				}
-
 			};
-
-
-
-
-
-
-
-
-
 		}
+
 
 		function disableButton() {
 
@@ -307,7 +311,6 @@ class ARButton {
 		}
 
 		function stylizeElement(element) {
-
 			element.style.position = 'absolute';
 			element.style.bottom = '20px';
 			element.style.padding = '12px 6px';
@@ -320,7 +323,6 @@ class ARButton {
 			element.style.opacity = '0.5';
 			element.style.outline = 'none';
 			element.style.zIndex = '999';
-
 		}
 
 		if ('xr' in navigator) {
