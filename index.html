@@ -1,5 +1,5 @@
 <!-- 
-	WebAR_test_16
+	WebAR_test_15
 
 	
 	
@@ -18,8 +18,7 @@
 	r12:
 	13:モデル二つの表示非表示をそれぞれボタンで制御
 	14:モデルの明るさ変更(モデル2のみ)
-	15:overlay1の高さがタッチの前後で変化してしまうため修正
-	16:
+	15:overlay1の高さがタッチの前後で変化してしまうため、修正中
 
 
 
@@ -63,7 +62,7 @@
 <html lang="en">
 
 <head>
-	<title>16 three.js ar - hit test</title>
+	<title>15 three.js ar - hit test</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<link type="text/css" rel="stylesheet" href="main.css">
@@ -71,23 +70,7 @@
 
 <body>
 
-	<div id="container"></div>
-	<style>
-        #container {
-            width: 100vw;
-            height: 100vh;
-            position: relative;
-            background-color: #f0f0f0;
-        }
-        .dot {
-            width: 10px;
-            height: 10px;
-            background-color: red;
-            border-radius: 50%;
-            position: absolute;
-        }
-    </style>
-	
+
 	<!-- 不要 -->
 	<!-- <div id="info">
 			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> ar - hit test<br/>(Chrome Android 81+)
@@ -97,9 +80,6 @@
 	<!-- Remove this when import maps will be widely supported -->
 	<!-- <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script> -->
 
-
-    <!-- HTMLのbody内でJavaScriptファイルを読み込む -->
-    <!-- <script src="Touch.js"></script> -->
 
 
 	<script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
@@ -114,7 +94,8 @@
 					"three": "https://unpkg.com/three/build/three.module.js"
 				}
 			}
-	</script>
+		</script>
+
 
 	<script type="module">
 
@@ -183,6 +164,11 @@
 
 
 
+
+
+
+
+
 			// ボタンの作成と追加
 			const button = document.createElement('button');
 			button.id = 'toggleButton';
@@ -195,18 +181,27 @@
 			container.appendChild(button);
 
 
+
+
+
+
+
+
+
 			// ARカメラ起動ボタン
 			document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures: ['hit-test'] }));
 
+			//
 
 			const geometry = new THREE.CylinderGeometry(0.1, 0.1, 0.2, 32).translate(0, 0.1, 0);
 
-			// 不要 関数呼び出し無し
+			// 不要
 			// コード内で3Dモデルを作成
 			function onSelect() {
 
 				if (reticle.visible) {
-			
+
+					// 必要ないのでコメントアウト
 					const material = new THREE.MeshPhongMaterial({ color: 0xffffff * Math.random() });
 					const mesh = new THREE.Mesh(geometry, material);
 					reticle.matrix.decompose(mesh.position, mesh.quaternion, mesh.scale);
@@ -487,12 +482,10 @@
 			}
 
 			renderer.render(scene, camera);
+
 		}
 
-
-
-
-
+		
 		// 追加
 		document.addEventListener('DOMContentLoaded', function () {
 			// タッチイベントをリスニング
@@ -503,9 +496,7 @@
 				console.log('タッチした座標: X=', touchX, ' Y=', touchY);
 			});
 		});
-
-
-
+		
 
 	</script>
 </body>
