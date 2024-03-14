@@ -201,13 +201,12 @@
 
 			const geometry = new THREE.CylinderGeometry(0.1, 0.1, 0.2, 32).translate(0, 0.1, 0);
 
-			// 不要
+			// 不要 関数呼び出し無し
 			// コード内で3Dモデルを作成
 			function onSelect() {
 
 				if (reticle.visible) {
-
-					// 必要ないのでコメントアウト
+			
 					const material = new THREE.MeshPhongMaterial({ color: 0xffffff * Math.random() });
 					const mesh = new THREE.Mesh(geometry, material);
 					reticle.matrix.decompose(mesh.position, mesh.quaternion, mesh.scale);
@@ -509,18 +508,20 @@
 				const touchVector = new THREE.Vector2(normalizedX, normalizedY);
 
 				// ARヒットテストを実行
-				const session = renderer.xr.getSession(); // セッションの取得
-				renderer.xr.hitTest(touchVector, session, function (hits) {
-					if (hits.length > 0) {
-						const hit = hits[0];
+				navigator.xr.requestHitTest(new XRHitTestOptions("screen", "estimated-feature-points")).then((hitTestResults) => {
+					if (hitTestResults.length > 0) {
+						const hit = hitTestResults[0];
 						const hitMatrix = new THREE.Matrix4().fromArray(hit.hitMatrix);
 						const hitPosition = new THREE.Vector3();
 						hitPosition.setFromMatrixPosition(hitMatrix);
 						console.log('AR床面の座標:', hitPosition.x, hitPosition.y, hitPosition.z);
 					}
+				}).catch((error) => {
+					console.error('ARヒットテストの実行中にエラーが発生しました:', error);
 				});
 			});
 		});
+
 
 
 
