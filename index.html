@@ -416,6 +416,8 @@
 
 			// render 関数内でタップイベントを監視し、タップが発生した場合にその位置を取得する
 			window.addEventListener('click', function(event) {
+				console.log('Tap detected!');
+
 				// クリックイベントの位置を取得
 				const x = event.clientX;
 				const y = event.clientY;
