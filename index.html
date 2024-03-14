@@ -499,29 +499,10 @@
 			document.addEventListener('touchstart', function (event) {
 				const touchX = event.touches[0].clientX;
 				const touchY = event.touches[0].clientY;
-
-				// ピクセル座標を正規化して、-1から1の範囲に変換
-				const normalizedX = (touchX / window.innerWidth) * 2 - 1;
-				const normalizedY = -(touchY / window.innerHeight) * 2 + 1;
-
-				// タッチ座標をARヒットテスト用のベクトルに変換
-				const touchVector = new THREE.Vector2(normalizedX, normalizedY);
-
-				// ARヒットテストを実行
-				navigator.xr.requestHitTest(new XRHitTestOptions("screen", "estimated-feature-points")).then((hitTestResults) => {
-					if (hitTestResults.length > 0) {
-						const hit = hitTestResults[0];
-						const hitMatrix = new THREE.Matrix4().fromArray(hit.hitMatrix);
-						const hitPosition = new THREE.Vector3();
-						hitPosition.setFromMatrixPosition(hitMatrix);
-						console.log('AR床面の座標:', hitPosition.x, hitPosition.y, hitPosition.z);
-					}
-				}).catch((error) => {
-					console.error('ARヒットテストの実行中にエラーが発生しました:', error);
-				});
+				
+				console.log('タッチした座標: X=', touchX, ' Y=', touchY);
 			});
 		});
-
 
 
 
