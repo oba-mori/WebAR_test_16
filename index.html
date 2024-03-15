@@ -19,7 +19,8 @@
 	13:モデル二つの表示非表示をそれぞれボタンで制御
 	14:モデルの明るさ変更(モデル2のみ)
 	15:overlay1の高さがタッチの前後で変化してしまうため、修正中
-	16:
+	16:console.log((xhr.loaded / xhr.total) * 100 + '% loaded');をコメントアウト
+
 
 
 
@@ -254,7 +255,7 @@
 						currentModel1 = model; // 新しいモデルを保持
 					},
 					function (xhr) {
-						console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
+						// console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
 					},
 					function (error) {
 						console.error('An error happened', error);
@@ -422,9 +423,14 @@
 				const x = event.clientX;
 				const y = event.clientY;
 
+				Console.log('x: ', x,' y: ', y);
+
 				// スクリーン座標系を正規化デバイス座標系（NDC）に変換
 				const ndcX = (x / window.innerWidth) * 2 - 1;
 				const ndcY = -(y / window.innerHeight) * 2 + 1;
+
+				Console.log('ndcX: ', ndcX,' ndcY: ', ndcY);
+
 
 				// 正規化デバイス座標系からレイを作成
 				const raycaster = new THREE.Raycaster();
@@ -439,11 +445,6 @@
 					console.log('タップ位置のワールド座標:', tapPosition);
 				}
 			});
-
-
-
-
-
 
 
 
