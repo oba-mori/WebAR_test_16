@@ -447,8 +447,68 @@
 				else
 				{
 					console.log('タップ位置が見つからない');
-					}
+				}
 			});
+
+
+
+
+
+
+
+
+
+// レイキャスターを作成
+const raycaster = new THREE.Raycaster();
+
+// マウスクリックイベントを監視してヒットテストを実行する
+window.addEventListener('click', function(event) {
+    // マウスクリック位置を取得
+    const x = (event.clientX / window.innerWidth) * 2 - 1;
+    const y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    // マウスクリック位置からレイを作成
+    raycaster.setFromCamera(new THREE.Vector2(x, y), camera);
+
+    // レイとオブジェクトの交差を計算
+    const intersects = raycaster.intersectObjects(scene.children, true);
+
+    // 交差があるかどうかをチェック
+    if (intersects.length > 0) {
+        // 交差点の位置を取得
+        const intersectionPoint = intersects[0].point;
+        console.log('交差点の位置:', intersectionPoint);
+    } else {
+        console.log('交差点が見つかりませんでした。');
+    }
+});
+
+
+
+
+
+
+const three = require('three');
+const intersects = require('threejs-geometry-hittest').intersects;
+
+// objects
+const box3 = new three.Box3(
+	new three.Vector3(0.5, 0.5, 0.5),
+	new three.Vector3(1.5, 1.5, 1.5)
+);
+
+// do hit-test. array returned.
+const results = intersects(geometry, box3);
+
+// indexes of faces intersecting with the box are printed to the console
+for (const result of results) {
+	console.log(`faceIndex = ${result.faceIndex}`);
+}
+
+
+
+
+
 
 
 
